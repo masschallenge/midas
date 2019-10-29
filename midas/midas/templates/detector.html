@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+
+
+
+<!--[if lt IE 7 ]>               <html lang="en" class="lt-ie10 lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7 ]>                  <html lang="en" class="lt-ie10 lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8 ]>                  <html lang="en" class="lt-ie10 lt-ie9"> <![endif]-->
+<!--[if IE 9 ]>                  <html lang="en" class="lt-ie10"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->  <html lang="en"> <!--<![endif]-->
+<html>
+<head>
+    
+  <link rel="stylesheet" href="https://unpkg.com/carbon-components@latest/css/carbon-components.css" />
+<style type="text/css">
+
+	body {
+    padding: 20px;
+}
+
+.p20 {
+    padding: 20px;
+}
+
+.canvasbox {
+    border-radius: 3px;
+    margin-right: 10px;
+    width: 450px;
+    height: 338px;
+    border-bottom: 3px solid #0063FF;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2), 0 4px 10px 0 #00000030;
+
+}
+
+.block {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.mb10 {
+    margin-bottom: 10px
+}
+
+.mt10 {
+    margin-top: 10px
+}
+
+.updatenote {
+    padding: 10px;
+    background: rgb(245, 147, 20);
+    color: white;
+    display: inline;
+}
+body, html {
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.hand-container {
+  transform-origin: 80% 100%;
+  margin-top: 63px;
+  margin-left: 50px;
+}
+.hand-container.wave {
+  animation: move 2.5s infinite ease-in-out;
+}
+
+.hand {
+  display: inline-block;
+  transform-origin: 80% 100%;
+  height:60px;
+}
+.hand.wave {
+  animation: wave 2.5s infinite linear;
+}
+
+@keyframes wave {
+  0%, 60%, 100% {
+    transform: rotate(17deg);
+  }
+  7.5%, 22.5%, 37.5%, 52.5% {
+    transform: rotate(54deg);
+  }
+  15%, 30%, 45% {
+    transform: rotate(24deg);
+  }
+  3.75%, 18.75%, 33.75%, 48.75% {
+    transform: rotate(27deg);
+  }
+  11.25%, 26.25%, 41.25%, 56.25% {
+    transform: rotate(51deg);
+  }
+}
+@keyframes move {
+  0%, 60%, 100% {
+    transform: translateX(0);
+  }
+  5.625%, 20.625%, 35.625%, 50.625% {
+    transform: translateX(8px);
+  }
+  13.125%, 28.125%, 43.125% {
+    transform: translateX(-8px);
+  }
+}
+
+
+.loader {
+  position: absolute;
+  top: calc(50% - 32px);
+  left: calc(50% - 32px);
+  width: 124px;
+  height: 124px;
+  border-radius: 50%;
+  perspective: 800px;
+}
+
+.inner {
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;  
+}
+
+.inner.one {
+  left: 0%;
+  top: 0%;
+  animation: rotate-one 1s linear infinite;
+  border-bottom: 3px solid #ff0000;
+}
+
+.inner.two {
+  right: 0%;
+  top: 0%;
+  animation: rotate-two 1s linear infinite;
+  border-right: 3px solid #ff0000;
+}
+
+.inner.three {
+  right: 0%;
+  bottom: 0%;
+  animation: rotate-three 1s linear infinite;
+  border-top: 3px solid #ff0000;
+}
+
+@keyframes rotate-one {
+  0% {
+    transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+  }
+}
+
+@keyframes rotate-two {
+  0% {
+    transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+  }
+}
+
+@keyframes rotate-three {
+  0% {
+    transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+  }
+}
+
+
+#updatenote{
+	position:absolute;
+	top:0;
+	left:0;
+}
+#trackbutton{
+	position:absolute;
+	bottom:0;
+	right:0;
+}
+#trackbutton:focus {
+  outline: none;
+}
+.automatic{
+
+}
+#canvas{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	opacity: 0.2;
+	z-index: -1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="loader hidden">
+  <div class="inner one"></div>
+  <div class="inner two"></div>
+  <div class="inner three"></div>
+</div>
+
+<div class="container">
+  <div class="hand-container hidden">
+    <img class="hand" src="https://i.ibb.co/TK7CMb3/hand.png" alt="*waves">    
+  </div>
+</div>
+
+<img id="img" src="/static/img/hand.png" class="canvasbox  hidden" id="handimage"/> 
+<canvas id="canvas" class="border canvasbox hidden"></canvas>
+
+  <video class="videobox canvasbox hidden" autoplay="autoplay" id="myvideo"></video>
+ <div class="toolbar">
+ <div id="updatenote" class="updatenote mt10"> loading model ..</div>
+    <button  id="trackbutton" class="bx--btn bx--btn--secondary" type="button" disabled>
+      Automatic Mode
+    </button>
+	</div>
+
+<script src="https://unpkg.com/carbon-components@latest/scripts/carbon-components.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/handtrackjs/dist/handtrack.min.js"> </script>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+<script>
+  // Notice there is no 'import' statement. 'handTrack' and 'tf' is
+  // available on the index-page because of the script tag above.
+window.detectionMode = 'manual';
+const video = document.getElementById("myvideo");
+const handimg = document.getElementById("handimage");
+const canvas = document.getElementById("canvas");
+const context = canvas.getContext("2d");
+let trackButton = document.getElementById("trackbutton");
+
+let updateNote = document.getElementById("updatenote");
+
+let imgindex = 1
+let isVideo = false;
+let model = null;
+
+// video.width = 500
+// video.height = 400
+
+const modelParams = {
+    flipHorizontal: true,   // flip e.g for video  
+    maxNumBoxes: 20,        // maximum number of boxes to detect
+    iouThreshold: 0.2,      // ioU threshold for non-max suppression
+    scoreThreshold: 0.9,    // confidence threshold for predictions.
+}
+
+function startVideo() {
+    handTrack.startVideo(video).then(function (status) {
+        console.log("video started", status);
+        if (status) {
+            updateNote.innerText = "Video started. Now tracking"
+            isVideo = true
+            runDetection()
+        } else {
+            updateNote.innerText = "Please enable video"
+        }
+    });
+}
+
+function toggleVideo() {
+    if (!isVideo) {
+        updateNote.innerText = "Starting video"
+        startVideo();
+        window.detectionMode = 'automatic';
+        $(trackButton).addClass('automatic');
+        $('#canvas').removeClass('hidden');
+    } else {
+        updateNote.innerText = "Stopping video"
+        handTrack.stopVideo(video)
+        window.detectionMode = 'manual';
+        $(trackButton).removeClass('automatic');
+        $('#canvas').addClass('hidden');
+        isVideo = false;
+        updateNote.innerText = "Video stopped. Use spacebar to raise hand"
+    }
+}
+
+
+trackButton.addEventListener("focus", function(){
+	$(this).blur();
+});
+
+trackButton.addEventListener("click", function(){
+    toggleVideo();
+});
+
+function sendHandwave(){
+        		$('.loader').addClass('hidden');
+        		
+        		$('.hand-container').addClass('wave').removeClass('hidden');
+        		$('.hand-container > .hand').addClass('wave')
+        		window.setTimeout(function(){
+        			$('.hand-container > .hand').removeClass('wave');
+        			$('.hand-container').removeClass('wave').addClass('hidden');
+
+        		}, 2000);
+        		$.post('/action/handraise/', {}, function(response){
+        			console.log(response);
+        			window.clearTimeout(window.postTimeout);
+        			window.postTimeout = null;
+        		});
+}
+
+function runDetection() {
+    model.detect(video).then(predictions => {
+        console.log("Predictions: ", predictions);
+        
+        if(predictions.length > 0 && predictions[0].score >= 0.9){
+        		
+        	if(!window.postTimeout){
+        		window.postTimeout = window.setTimeout(sendHandwave, 1000);
+        	}
+        	$('.loader').removeClass('hidden');
+        } else if(window.postTimeout && predictions.length == 0){
+        	window.clearTimeout(window.postTimeout);
+        	console.log("cleared timeout");
+        	window.postTimeout = null;
+        	$('.loader').addClass('hidden');
+        }
+        model.renderPredictions(predictions, canvas, context, video);
+        if (isVideo) {
+            requestAnimationFrame(runDetection);
+        }
+    });
+}
+
+function runDetectionImage(img) {
+    model.detect(img).then(predictions => {
+        console.log("Predictions: ", predictions);
+        model.renderPredictions(predictions, canvas, context, img);
+    });
+}
+
+// Load the model.
+handTrack.load(modelParams).then(lmodel => {
+    // detect objects in the image.
+    model = lmodel
+    updateNote.innerText = "Loaded Model!"
+    runDetectionImage(handimg)
+    trackButton.disabled = false
+    //startVideo();
+    
+});
+
+$(document).keypress(function(e) {
+  
+  if(window.detectionMode == 'manual' && e.keyCode == 32){
+   sendHandwave(); 
+  }
+});
+</script>
+</body>
+</html>
