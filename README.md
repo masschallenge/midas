@@ -18,7 +18,7 @@ docker-compose up
 
 - authenticate with slack
 
-- once the model loads, <spacebar> sends a hand to the handraising channel
+- once the model loads, pressing \<spacebar\> sends a hand to the handraising channel
 
 ## automatic mode (expirimental)
 
